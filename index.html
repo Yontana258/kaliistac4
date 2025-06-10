@@ -48,6 +48,18 @@
     .feature-card:hover {
       transform: scale(1.05);
     }
+    .member-card {
+      margin-bottom: 20px;
+    }
+    .member-card img {
+      width: 40%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    }
+    .member-card .card-body {
+      text-align: center;
+    }
     .login-box {
       background-color: rgba(255, 255, 255, 0.9);
       padding: 40px;
@@ -139,7 +151,73 @@
   <!-- About Section -->
   <div id="about" style="display: none;">
     <h2 class="text-center text-white mb-4">Tentang</h2>
-    <p class="text-center text-white">Sistem Informasi Pertanahan adalah aplikasi untuk mengelola informasi geospasial.</p>
+    <p class="text-center text-white">KALISTA adalah singkatan dari Kalimati Status Tanah, yaitu sebuah Sistem Informasi Pertanahan Digital berbasis WebGIS yang dikembangkan untuk menyajikan data bidang tanah secara terbuka dan interaktif. Sistem ini memungkinkan pengguna untuk mengakses informasi status tanah, Nomor Identifikasi Bidang (NIB), dan penggunaan lahan dalam satu tampilan peta digital.</p>
+    <h3 class="text-center text-white mb-4">Anggota Kelompok</h3>
+    <div class="row">
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="foto/Yontana.png" alt="Foto Anggota 1" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Yontana</h5>
+            <p class="card-text">NIM: 40030622650091</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="Foto/Made.png" alt="Foto Anggota 2" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Ni Made Susiana M.</h5>
+            <p class="card-text">NIM: 40030622650070</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="Foto/Putri.png" alt="Foto Anggota 3" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Putri Rahma WPH</h5>
+            <p class="card-text">NIM: 40030622650006</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="Foto/Hilmus.png" alt="Foto Anggota 4" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Hilmy Fajri Tsaqib</h5>
+            <p class="card-text">NIM: 40030622650061</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="Foto/Nat.png" alt="Foto Anggota 5" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Natasya Roito S.</h5>
+            <p class="card-text">NIM: 40030622650112</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="fOTO/Rezdel.png" alt="Foto Anggota 6" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Rezki Adelia A.</h5>
+            <p class="card-text">NIM: 40030622650088</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4">
+        <div class="card member-card">
+          <img src="fOTO/Tijul.png" alt="Foto Anggota 7" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Tiara Julia Pradipta</h5>
+            <p class="card-text">NIM: 40030621650028</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Login Form -->
@@ -243,18 +321,18 @@ function login() {
 
 
   function registerAccount() {
-    const newUser      = document.getElementById("new-username").value.trim();
+    const newUser        = document.getElementById("new-username").value.trim();
     const newPass = document.getElementById("new-password").value.trim();
-    if (!newUser      || !newPass) {
+    if (!newUser        || !newPass) {
       Swal.fire({ icon: 'warning', text: 'Isi username dan password baru!' });
       return;
     }
-    const exists = allowedAccounts.some(a => a.username === newUser      );
+    const exists = allowedAccounts.some(a => a.username === newUser        );
     if (exists) {
       Swal.fire({ icon: 'error', text: 'Username sudah digunakan!' });
       return;
     }
-    allowedAccounts.push({ username: newUser      , password: newPass });
+    allowedAccounts.push({ username: newUser        , password: newPass });
     Swal.fire({ icon: 'success', text: 'Akun berhasil dibuat. Silakan login.' });
     showLoginForm();
   }
@@ -287,12 +365,6 @@ function login() {
       transparent: true
     }).addTo(map);
 
-    var wmsLayer2 = L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
-      layers: "pl",
-      format: "image/png",
-      transparent: true
-    }).addTo(map);
-
     const legendUrl = "http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=persil_baru";
     document.getElementById("legend").innerHTML = `
       <h6>Legenda</h6>
@@ -305,7 +377,6 @@ function login() {
     };
     var overlaymap = {
       "Bidang Tanah": wmsLayer1,
-      "Penggunaan Lahan": wmsLayer2,
     };
     L.control.layers(basemap, overlaymap).addTo(map);
 
