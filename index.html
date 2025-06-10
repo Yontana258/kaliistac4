@@ -52,7 +52,6 @@
       border: none;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      background-color: rgba(255, 255, 255, 0.9);
     }
     .login-box {
       background-color: rgba(255, 255, 255, 0.9);
@@ -90,20 +89,6 @@
     }
     .member-card .card-body {
       text-align: center;
-    }
-    #dashboard {
-      position: relative;
-      overflow: hidden;
-    }
-    .dashboard-video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-      opacity: 0.5;
     }
   </style>
 </head>
@@ -145,10 +130,6 @@
 <div class="content">
   <!-- Dashboard Section -->
   <div id="dashboard">
-    <video class="dashboard-video" autoplay loop muted playsinline>
-      <source src="vidio/3007826-uhd_3840_2160_30fps.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
     <h2 class="text-center text-white mb-4">Selamat Datang di KALISTA</h2>
     <div class="row">
       <div class="col-md-4 mb-4">
@@ -274,7 +255,7 @@
 
   <!-- Map Section -->
   <div id="map-section" style="display: none;">
-    <h2 class="text-center text-white mb-4">Peta Bidang Tanah Kalimati</h2>
+    <h2 class="text-center text-white mb-4">Peta Bidang Tanah Desa Kalimati</h2>
     <div id="map"></div>
     <div id="legend"></div>
   </div>
@@ -293,8 +274,6 @@
     document.getElementById("about").style.display = "none";
     document.getElementById("map-section").style.display = "none";
     document.getElementById("login-form").style.display = "none";
-    const video = document.querySelector(".dashboard-video");
-    if (video) video.play();
   }
 
   function showAbout() {
@@ -302,8 +281,6 @@
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("map-section").style.display = "none";
     document.getElementById("login-form").style.display = "none";
-    const video = document.querySelector(".dashboard-video");
-    if (video) video.pause();
   }
 
   function showMap() {
@@ -311,7 +288,7 @@
       Swal.fire({
         icon: 'warning',
         title: 'Akses Ditolak',
-        text: 'Anda harus login untuk mengakses.'
+        text: 'Anda harus login untuk mengakses peta.'
       });
       return;
     }
@@ -319,18 +296,7 @@
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("about").style.display = "none";
     document.getElementById("login-form").style.display = "none";
-    const video = document.querySelector(".dashboard-video");
-    if (video) video.pause();
     initMap();
-  }
-
-  function showLoginForm() {
-    document.getElement("login-form").style.display = "block";
-    document.getElementById("dashboard").style.display = "none";
-    document.getElementById("about").style.display = "none";
-    document.getElementById("map-section").style.display = "none";
-    const video = document.querySelector(".dashboard-video");
-    if (video) video.pause();
   }
 
   function downloadData() {
@@ -339,6 +305,13 @@
       title: 'Download Data',
       text: 'Fitur download data akan segera tersedia.'
     });
+  }
+
+  function showLoginForm() {
+    document.getElementById("login-form").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("about").style.display = "none";
+    document.getElementById("map-section").style.display = "none";
   }
 
   function login() {
@@ -361,7 +334,7 @@
       Swal.fire({
         icon: 'error',
         title: 'Gagal Login',
-        text: 'Username atau password salah!'
+        text: 'Username atau Password salah!'
       });
     }
   }
@@ -391,8 +364,6 @@
     document.getElementById("map-section").style.display = "none";
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("about").style.display = "none";
-    const video = document.querySelector(".dashboard-video");
-    if (video) video.pause();
   }
 
   function initMap() {
