@@ -214,30 +214,33 @@
     document.getElementById("map-section").style.display = "none";
   }
 
-  function login() {
+function login() {
     const user = document.getElementById("username").value.trim();
     const pass = document.getElementById("password").value.trim();
     const found = allowedAccounts.find(a => a.username === user && a.password === pass);
 
     if (found) {
-      isLoggedIn = true;
-      document.getElementById("login-form").style.display = "none";
-      document.getElementById("logout-btn").style.display = "block";
-      document.getElementById("login-btn").style.display = "none"; // Hide login button
-      showMap(); // Redirect to map after login
-      Swal.fire({
-        icon: 'success',
-        title: 'Login Berhasil',
-        text: 'Selamat datang, ' + user + '!'
-      });
+        isLoggedIn = true;
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("logout-btn").style.display = "block";
+        document.getElementById("login-btn").style.display = "none"; // Hide login button
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Berhasil',
+            text: 'Selamat datang, ' + user + '!'
+        }).then(() => {
+            // Redirect to the specified URL after the alert is closed
+            window.location.href = "https://yontana258.github.io/kalistac4/";
+        });
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Gagal Login',
-        text: 'Username atau Password salah!'
-      });
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Login',
+            text: 'Username atau Password salah!'
+        });
     }
-  }
+}
+
 
   function registerAccount() {
     const newUser      = document.getElementById("new-username").value.trim();
