@@ -25,7 +25,7 @@
       background-color: #1e3c72;
     }
     .navbar-brand img {
-      width: 50px; /* Adjust logo size */
+      width: 50px;
       margin-right: 10px;
     }
     .navbar-nav .nav-link {
@@ -67,8 +67,8 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 350px;
       animation: fadeIn 1s ease-in-out;
-      margin: auto; /* Center the login box */
-      margin-top: 100px; /* Add some top margin */
+      margin: auto;
+      margin-top: 100px;
     }
     .login-box h2 {
       color: #1e3c72;
@@ -290,73 +290,130 @@
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("about").style.display = "none";
     document.getElementById("map-section").style.display = "none";
+    document.getElementById("register-form").style.display = "none";
+    document.getElementById("username").style.display = "block";
+    document.getElementById("password").style.display = "block";
+    document.getElementById("login-btn").style.display = "block";
+    document.getElementById("toggle-register-btn").style.display = "block";
+    document.getElementById("form-title").innerHTML = '<i class="bi bi-person-circle"></i> Login Sistem';
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
   }
 
-function login() {
+  function showRegisterForm() {
+    document.getElementById("register-form").style.display = "block";
+    document.getElementById("username").style.display = "none";
+    document.getElementById("password").style.display = "none";
+    document.getElementById("login-btn").style.display = "none";
+    document.getElementById("toggle-register-btn").style.display = "none";
+    document.getElementById("form-title").innerHTML = '<i class="bi bi-person-plus"></i> Daftar Akun';
+    document.getElementById("new-username").value = "";
+    document.getElementById("new-password").value = "";
+  }
+
+  function login() {
     const user = document.getElementById("username").value.trim();
     const pass = document.getElementById("password").value.trim();
     const found = allowedAccounts.find(a => a.username === user && a.password === pass);
 
     if (found) {
-        isLoggedIn = true;
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("logout-btn").style.display = "block";
-        document.getElementById("login-btn").style.display = "none"; // Hide login button
-        Swal.fire({
-            icon: 'success',
-            title: 'Login Berhasil',
-            text: 'Selamat datang, ' + user + '!'
-        }).then(() => {
-            // Redirect to the specified URL after the alert is closed
-            window.location.href = "https://yontana258.github.io/kalistac4/";
-        });
+      isLoggedIn = true;
+      document.getElementById("login-form").style.display = "none";
+      document.getElementById("logout-btn").style.display = "block";
+      document.getElementById("login-btn").style.display = "none";
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Berhasil',
+        text: 'Selamat datang, ' + user + '!'
+      }).then(() => {
+        window.location.href = "https://yontana258.github.io/kalistac4/";
+      });
     } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal Login',
-            text: 'Username atau Password salah!'
-        });
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal Login',
+        text: 'Username atau Password salah!'
+      });
     }
-}
-
+  }
 
   function registerAccount() {
-    const newUser        = document.getElementById("new-username").value.trim();
+    const newUser = document.getElementById("new-username").value.trim();
     const newPass = document.getElementById("new-password").value.trim();
-    if (!newUser        || !newPass) {
-      Swal.fire({ icon: 'warning', text: 'Isi username dan password baru!' });
+
+    if (!newUser || !newPass) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Input Tidak Lengkap',
+        text: 'Isi username dan password baru!'
+      });
       return;
     }
-    const exists = allowedAccounts.some(a => a.username === newUser        );
+    if (newUser.length < 4) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Username Tidak Valid',
+        text: 'Username harus minimal 4 karakter!'
+      });
+      return;
+    }
+    if (newPass.length < 6) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Password Tidak Valid',
+        text: 'Password harus minimal 6 karakter!'
+      });
+      return;
+    }
+    const exists = allowedAccounts.some(a => a.username === newUser);
     if (exists) {
-      Swal.fire({ icon: 'error', text: 'Username sudah digunakan!' });
+      Swal.fire({
+        icon: 'error',
+        title: 'Username Tidak Tersedia',
+        text: 'Username sudah digunakan!'
+      });
       return;
     }
-    allowedAccounts.push({ username: newUser        , password: newPass });
-    Swal.fire({ icon: 'success', text: 'Akun berhasil dibuat. Silakan login.' });
+
+    allowedAccounts.push({ username: newUser, password: newPass });
+    Swal.fire({
+      icon: 'success',
+      title: 'Pendaftaran Berhasil',
+      text: 'Akun berhasil dibuat. Silakan login.'
+    });
+    document.getElementById("new-username").value = "";
+    document.getElementById("new-password").value = "";
     showLoginForm();
   }
 
   function logout() {
     isLoggedIn = false;
     document.getElementById("logout-btn").style.display = "none";
-    document.getElementById("login-btn").style.display = "block"; // Show login button
+    document.getElementById("login-btn").style.display = "block";
     document.getElementById("login-form").style.display = "block";
     document.getElementById("map-section").style.display = "none";
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("about").style.display = "none";
   }
 
+  function downloadData() {
+    Swal.fire({
+      icon: 'info',
+      title: 'Fitur Download',
+      text: 'Fitur ini sedang dalam pengembangan.'
+    });
+  }
+
   function initMap() {
-    var map = L.map('map').setView([-7.221053787984151, 110.72987627483798], 15);
+    const map = L.map('map").setView([-7.221053787984151, 110.72987627483798], 15);
 
     var osmDefault = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
     var osmHOT = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team'
+      attribution: '© OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team'
     }).addTo(map);
 
     var wmsLayer1 = L.tileLayer.wms("http://localhost:8080/geoserver/wms", {
@@ -387,14 +444,14 @@ function login() {
       const bounds = map.getBounds();
 
       $.ajax({
-        url: "/geoserver/wms",
+        url: "http://localhost:8080/geoserver/wms",
         data: {
           service: "WMS",
           version: "1.1.1",
           request: "GetFeatureInfo",
           info_format: "application/json",
-          layers: "ne:persil_baru",
-          query_layers: "ne:persil_baru",
+          layers: "persil_baru",
+          query_layers: "persil_baru",
           width: size.x,
           height: size.y,
           x: Math.round(pt.x),
@@ -418,7 +475,7 @@ function login() {
       });
     });
   }
+}
 </script>
-
 </body>
 </html>
