@@ -248,10 +248,11 @@
 </div>
 
 <script>
-  const allowedAccounts = [
-    { username: "admin", password: "admin" },
-    { username: "masyarakat", password: "12345" },
-  ];
+let allowedAccounts = JSON.parse(localStorage.getItem("accounts")) || [
+  { username: "admin", password: "admin" },
+  { username: "masyarakat", password: "12345" },
+];
+
 
   let isLoggedIn = false;
 
@@ -320,22 +321,27 @@ function login() {
 }
 
 
-  function registerAccount() {
-    const newUser        = document.getElementById("new-username").value.trim();
-    const newPass = document.getElementById("new-password").value.trim();
-    if (!newUser        || !newPass) {
-      Swal.fire({ icon: 'warning', text: 'Isi username dan password baru!' });
-      return;
-    }
-    const exists = allowedAccounts.some(a => a.username === newUser        );
-    if (exists) {
-      Swal.fire({ icon: 'error', text: 'Username sudah digunakan!' });
-      return;
-    }
-    allowedAccounts.push({ username: newUser        , password: newPass });
-    Swal.fire({ icon: 'success', text: 'Akun berhasil dibuat. Silakan login.' });
-    showLoginForm();
+ function registerAccount() {
+  const newUser = document.getElementById("new-username").value.trim();
+  const newPass = document.getElementById("new-password").value.trim();
+
+  if (!newUser || !newPass) {
+    Swal.fire({ icon: 'warning', text: 'Isi username dan password baru!' });
+    return;
   }
+
+  const exists = allowedAccounts.some(a => a.username === newUser);
+  if (exists) {
+    Swal.fire({ icon: 'error', text: 'Username sudah digunakan!' });
+    return;
+  }
+
+  allowedAccounts.push({ username: newUser, password: newPass });
+  localStorage.setItem("accounts", JSON.stringify(allowedAccounts)); // simpan ke local storage
+
+  Swal.fire({ icon: 'success', text: 'Akun berhasil dibuat. Silakan login.' });
+  showLoginForm();
+}
 
   function logout() {
     isLoggedIn = false;
