@@ -343,31 +343,41 @@ function login() {
 }
 
 function registerAccount() {
-  const newUser = document.getElementById("new-username").value.trim();
+  const newUser  = document.getElementById("new-username").value.trim();
   const newPass = document.getElementById("new-password").value.trim();
-  if (!newUser || !newPass) {
+  
+  if (!newUser  || !newPass) {
     Swal.fire({ icon: 'warning', text: 'Isi username dan password baru!' });
     return;
   }
 
   const accounts = getAccounts();
-  const exists = accounts.some(a => a.username === newUser);
+  const exists = accounts.some(a => a.username === newUser );
+  
   if (exists) {
     Swal.fire({ icon: 'error', text: 'Username sudah digunakan!' });
     return;
   }
 
-  accounts.push({ username: newUser, password: newPass });
+  // Menambahkan akun baru ke dalam daftar
+  accounts.push({ username: newUser , password: newPass });
   saveAccounts(accounts);
 
+  // Menampilkan pesan sukses dan langsung login
   Swal.fire({ 
     icon: 'success', 
     title: 'Pendaftaran Berhasil',
     text: 'Akun berhasil dibuat. Silakan login.'
   }).then(() => {
-    showLoginForm();
+    // Mengisi field login dengan data baru
+    document.getElementById("username").value = newUser ;
+    document.getElementById("password").value = newPass;
+    
+    // Memanggil fungsi login
+    login();
   });
 }
+
 
 function logout() {
   isLoggedIn = false;
