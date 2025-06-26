@@ -248,12 +248,16 @@
 </div>
 
 <script>
-let allowedAccounts = JSON.parse(localStorage.getItem("accounts")) || [
-  { username: "admin", password: "admin" },
-  { username: "masyarakat", password: "12345" },
-];
+function getAccounts() {
+  return JSON.parse(localStorage.getItem("accounts")) || [
+    { username: "admin", password: "admin" },
+    { username: "masyarakat", password: "12345" },
+  ];
+}
 
-
+function saveAccounts(accounts) {
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+}
   let isLoggedIn = false;
 
   function showDashboard() {
@@ -294,50 +298,50 @@ let allowedAccounts = JSON.parse(localStorage.getItem("accounts")) || [
   }
 
 function login() {
-    const user = document.getElementById("username").value.trim();
-    const pass = document.getElementById("password").value.trim();
-    const found = allowedAccounts.find(a => a.username === user && a.password === pass);
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+  const accounts = getAccounts();
+  const found = accounts.find(a => a.username === user && a.password === pass);
 
-    if (found) {
-        isLoggedIn = true;
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("logout-btn").style.display = "block";
-        document.getElementById("login-btn").style.display = "none"; // Hide login button
-        Swal.fire({
-            icon: 'success',
-            title: 'Login Berhasil',
-            text: 'Selamat datang, ' + user + '!'
-        }).then(() => {
-            // Redirect to the specified URL after the alert is closed
-            window.location.href = "https://yontana258.github.io/kalistac4/";
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal Login',
-            text: 'Username atau Password salah!'
-        });
-    }
+  if (found) {
+    isLoggedIn = true;
+    document.getElementById("login-form").style.display = "none";
+    document.getElementById("logout-btn").style.display = "block";
+    document.getElementById("login-btn").style.display = "none";
+    Swal.fire({
+      icon: 'success',
+      title: 'Login Berhasil',
+      text: 'Selamat datang, ' + user + '!'
+    }).then(() => {
+      window.location.href = "https://yontana258.github.io/kalistac4/";
+    });
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal Login',
+      text: 'Username atau Password salah!'
+    });
+  }
 }
 
 
- function registerAccount() {
+function registerAccount() {
   const newUser = document.getElementById("new-username").value.trim();
   const newPass = document.getElementById("new-password").value.trim();
-
   if (!newUser || !newPass) {
     Swal.fire({ icon: 'warning', text: 'Isi username dan password baru!' });
     return;
   }
 
-  const exists = allowedAccounts.some(a => a.username === newUser);
+  const accounts = getAccounts();
+  const exists = accounts.some(a => a.username === newUser);
   if (exists) {
     Swal.fire({ icon: 'error', text: 'Username sudah digunakan!' });
     return;
   }
 
-  allowedAccounts.push({ username: newUser, password: newPass });
-  localStorage.setItem("accounts", JSON.stringify(allowedAccounts)); // simpan ke local storage
+  accounts.push({ username: newUser, password: newPass });
+  saveAccounts(accounts);
 
   Swal.fire({ icon: 'success', text: 'Akun berhasil dibuat. Silakan login.' });
   showLoginForm();
